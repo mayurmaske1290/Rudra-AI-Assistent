@@ -22,7 +22,7 @@ Rudra-AI-Assistent/
 - Text-to-speech using `pyttsx3`
 - OpenAI-powered conversational answers for general questions
 - Modular AI brain with `process_command(command)`
-- Safe system control actions (time/date, app launching, simple OS commands)
+- Safe system actions: open apps/websites, Google search, quick notes, date/time, and system info
 - Cross-platform support (Windows + Linux)
 
 ---
@@ -95,6 +95,13 @@ Say commands like:
 - "Rudra, date"
 - "Rudra, exit"
 
+### Examples for smarter assistant usage
+- "Rudra, search best Python tutorial"
+- "Rudra, open youtube.com"
+- "Rudra, take note buy groceries"
+- "Rudra, system info"
+- "Rudra, explain quantum computing" (answered by OpenAI and spoken aloud)
+
 ---
 
 ## Linux Setup
@@ -120,6 +127,7 @@ python rudra.py
 - **No voice output**: check system output device and volume.
 - **Speech not recognized**: speak clearly after wake word, and check internet connection (Google recognizer needs network).
 - **OpenAI answers not working**: verify `OPENAI_API_KEY` is set, restart terminal, and ensure `openai` package is installed from `requirements.txt`.
+- **Can it do every task like Google Assistant?** RUDRA supports many common tasks and can answer general questions via OpenAI, but it is still a local Python assistant with a safe, limited automation scope.
 
 ## Safety Note
 This project is educational and intentionally avoids harmful functionality.

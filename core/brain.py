@@ -5,7 +5,15 @@ from __future__ import annotations
 import os
 from typing import Tuple
 
-from core.system_control import get_date_string, get_time_string, open_application
+from core.system_control import (
+    get_date_string,
+    get_system_info,
+    get_time_string,
+    open_application,
+    open_website,
+    save_note,
+    web_search,
+)
 
 try:
     from openai import OpenAI
@@ -32,9 +40,7 @@ def _ask_openai(user_text: str) -> str:
         )
 
     if OpenAI is None:
-        return (
-            "OpenAI package is not installed. Run pip install openai and try again."
-        )
+        return "OpenAI package is not installed. Run pip install openai and try again."
 
     model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
@@ -77,9 +83,32 @@ def process_command(command: str) -> Tuple[str, bool]:
     if "date" in cmd or "day" in cmd:
         return f"Today is {get_date_string()}.", False
 
+    if "system info" in cmd or "about this system" in cmd:
+        return get_system_info(), False
+
     if cmd.startswith("open "):
-        app = cmd.replace("open ", "", 1).strip()
-        success, message = open_application(app)
+        target = cmd.replace("open ", "", 1).strip()
+
+        if "." in target or target.startswith(("http", "www")):
+            success, message = open_website(target)
+            return message if success else f"Sorry, {message}", False
+
+        success, message = open_application(target)
+        return message if success else f"Sorry, {message}", False
+
+    if cmd.startswith("search "):
+        query = cmd.replace("search ", "", 1).strip()
+        success, message = web_search(query)
+        return message if success else f"Sorry, {message}", False
+
+    if cmd.startswith("google "):
+        query = cmd.replace("google ", "", 1).strip()
+        success, message = web_search(query)
+        return message if success else f"Sorry, {message}", False
+
+    if cmd.startswith("note ") or cmd.startswith("take note "):
+        note_text = cmd.replace("take note", "", 1).replace("note", "", 1).strip()
+        success, message = save_note(note_text)
         return message if success else f"Sorry, {message}", False
 
     if "hello" in cmd or "hi" in cmd:
@@ -88,5 +117,4 @@ def process_command(command: str) -> Tuple[str, bool]:
     if "your name" in cmd:
         return "I am RUDRA, your personal AI assistant.", False
 
-    # For all other commands, fall back to OpenAI for natural conversation.
     return _ask_openai(command), False

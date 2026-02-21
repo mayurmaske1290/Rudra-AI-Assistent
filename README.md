@@ -29,7 +29,7 @@ Rudra-AI-Assistent/
 ## Windows 11 + VS Code (Recommended Setup)
 
 ### 1) Install prerequisites
-- Install **Python 3.11 (recommended) or Python 3.12 (supported)** from: https://www.python.org/downloads/
+- Install **Python 3.11 (recommended, including 3.11.9) or Python 3.12 (supported)** from: https://www.python.org/downloads/
   - During install, check **"Add Python to PATH"**.
   - Avoid Python 3.14 for now because voice dependencies are not fully compatible yet.
 - Install **VS Code**: https://code.visualstudio.com/
@@ -98,6 +98,7 @@ python rudra.py
 ---
 
 ## Troubleshooting
+- **I am on Python 3.11.9 — is that okay?** Yes. Python 3.11.9 is fully supported and recommended for this project.
 - **Can I use Python 3.12?** Yes — 3.12 is supported and recommended alongside 3.11.
 - **ImportError: `cannot import name speak from core.voice`**:
   - Make sure your project has `core/voice.py` from this repo and not an older copy.

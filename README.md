@@ -20,6 +20,7 @@ Rudra-AI-Assistent/
 - Wake-word detection (`rudra`)
 - Speech-to-text using `SpeechRecognition`
 - Text-to-speech using `pyttsx3`
+- OpenAI-powered conversational answers for general questions
 - Modular AI brain with `process_command(command)`
 - Safe system control actions (time/date, app launching, simple OS commands)
 - Cross-platform support (Windows + Linux)
@@ -69,6 +70,17 @@ Then run:
 pip install SpeechRecognition pyttsx3
 ```
 
+
+### 4.1) Configure OpenAI (for conversational answers)
+In PowerShell (inside your activated `.venv` terminal):
+```powershell
+setx OPENAI_API_KEY "your_api_key_here"
+setx OPENAI_MODEL "gpt-4o-mini"
+```
+Then **close and reopen** the VS Code terminal.
+
+If you do not set an API key, RUDRA will still run, but OpenAI chat answers will be unavailable.
+
 ### 5) Select interpreter in VS Code
 - Press `Ctrl+Shift+P` -> `Python: Select Interpreter` -> choose `.venv` interpreter.
 
@@ -107,6 +119,7 @@ python rudra.py
 - **No microphone detected**: ensure your input device is connected and allowed in Windows privacy settings.
 - **No voice output**: check system output device and volume.
 - **Speech not recognized**: speak clearly after wake word, and check internet connection (Google recognizer needs network).
+- **OpenAI answers not working**: verify `OPENAI_API_KEY` is set, restart terminal, and ensure `openai` package is installed from `requirements.txt`.
 
 ## Safety Note
 This project is educational and intentionally avoids harmful functionality.

@@ -20,7 +20,8 @@ Rudra-AI-Assistent/
 - Wake-word detection (`rudra`)
 - Speech-to-text using `SpeechRecognition`
 - Text-to-speech using `pyttsx3`
-- OpenAI-powered conversational answers for general questions
+- Local GPT4All conversational answers (free, on-device)
+- Optional OpenAI cloud answers
 - Modular AI brain with `process_command(command)`
 - Safe system actions: open apps/websites, Google search, quick notes, date/time, and system info
 - Cross-platform support (Windows + Linux)
@@ -71,15 +72,28 @@ pip install SpeechRecognition pyttsx3
 ```
 
 
-### 4.1) Configure OpenAI (for conversational answers)
+### 4.1) Configure Local LLM (GPT4All - truly free, on your computer)
 In PowerShell (inside your activated `.venv` terminal):
 ```powershell
+setx RUDRA_LLM_PROVIDER "gpt4all"
+setx GPT4ALL_MODEL "ggml-gpt4all-j-v1.3-groovy.bin"
+```
+
+Optional (if your model file is in a custom folder):
+```powershell
+setx GPT4ALL_MODEL_PATH "D:\models"
+```
+
+RUDRA will use GPT4All locally for open-ended questions (no API cost).
+
+### 4.2) Optional OpenAI cloud mode
+If you prefer OpenAI instead of local GPT4All:
+```powershell
+setx RUDRA_LLM_PROVIDER "openai"
 setx OPENAI_API_KEY "your_api_key_here"
 setx OPENAI_MODEL "gpt-4o-mini"
 ```
 Then **close and reopen** the VS Code terminal.
-
-If you do not set an API key, RUDRA will still run, but OpenAI chat answers will be unavailable.
 
 ### 5) Select interpreter in VS Code
 - Press `Ctrl+Shift+P` -> `Python: Select Interpreter` -> choose `.venv` interpreter.
@@ -100,7 +114,7 @@ Say commands like:
 - "Rudra, open youtube.com"
 - "Rudra, take note buy groceries"
 - "Rudra, system info"
-- "Rudra, explain quantum computing" (answered by OpenAI and spoken aloud)
+- "Rudra, explain quantum computing" (answered by local GPT4All/OpenAI and spoken aloud)
 
 ---
 
@@ -126,7 +140,8 @@ python rudra.py
 - **No microphone detected**: ensure your input device is connected and allowed in Windows privacy settings.
 - **No voice output**: check system output device and volume.
 - **Speech not recognized**: speak clearly after wake word, and check internet connection (Google recognizer needs network).
-- **OpenAI answers not working**: verify `OPENAI_API_KEY` is set, restart terminal, and ensure `openai` package is installed from `requirements.txt`.
+- **Local GPT4All not working**: ensure `gpt4all` is installed, `RUDRA_LLM_PROVIDER=gpt4all`, and `GPT4ALL_MODEL` points to a valid local model file.
+- **OpenAI answers not working**: set `RUDRA_LLM_PROVIDER=openai`, verify `OPENAI_API_KEY`, restart terminal, and ensure `openai` package is installed from `requirements.txt`.
 - **Can it do every task like Google Assistant?** RUDRA supports many common tasks and can answer general questions via OpenAI, but it is still a local Python assistant with a safe, limited automation scope.
 
 ## Safety Note

@@ -16,6 +16,11 @@ from core.system_control import (
 )
 
 try:
+    from gpt4all import GPT4All
+except ImportError:  # pragma: no cover - optional dependency at development time
+    GPT4All = None  # type: ignore[assignment]
+
+try:
     from openai import OpenAI
 except ImportError:  # pragma: no cover - optional dependency at development time
     OpenAI = None  # type: ignore[assignment]
@@ -28,6 +33,41 @@ _SYSTEM_PROMPT = (
     "Reply in plain text suitable for speech output. "
     "Keep answers short unless the user asks for details."
 )
+
+_local_model = None
+
+
+def _ask_gpt4all(user_text: str) -> str:
+    """Generate an answer using a local GPT4All model (fully offline)."""
+    if GPT4All is None:
+        return "Local LLM is not installed. Run pip install gpt4all and try again."
+
+    model_name = os.getenv("GPT4ALL_MODEL", "ggml-gpt4all-j-v1.3-groovy.bin")
+    model_path = os.getenv("GPT4ALL_MODEL_PATH", "").strip() or None
+    max_tokens = int(os.getenv("RUDRA_MAX_TOKENS", "220"))
+
+    global _local_model
+
+    try:
+        if _local_model is None:
+            _local_model = GPT4All(model_name=model_name, model_path=model_path)
+
+        prompt = (
+            f"{_SYSTEM_PROMPT}\n"
+            f"User: {user_text}\n"
+            "Assistant:"
+        )
+        answer = _local_model.generate(
+            prompt,
+            max_tokens=max_tokens,
+            temp=0.6,
+        )
+        cleaned = str(answer).strip()
+        if cleaned:
+            return cleaned
+        return "I could not generate a local model response right now."
+    except Exception as exc:  # noqa: BLE001
+        return f"Local LLM failed: {exc}"
 
 
 def _ask_openai(user_text: str) -> str:
@@ -60,6 +100,18 @@ def _ask_openai(user_text: str) -> str:
         return "I could not generate a response right now."
     except Exception as exc:  # noqa: BLE001
         return f"I could not reach OpenAI right now: {exc}"
+
+
+def _ask_llm(user_text: str) -> str:
+    """Route chat answers to local GPT4All or OpenAI based on configuration."""
+    provider = os.getenv("RUDRA_LLM_PROVIDER", "gpt4all").strip().lower()
+
+    if provider == "gpt4all":
+        return _ask_gpt4all(user_text)
+    if provider == "openai":
+        return _ask_openai(user_text)
+
+    return "Invalid RUDRA_LLM_PROVIDER. Use gpt4all or openai."
 
 
 def process_command(command: str) -> Tuple[str, bool]:
@@ -117,4 +169,4 @@ def process_command(command: str) -> Tuple[str, bool]:
     if "your name" in cmd:
         return "I am RUDRA, your personal AI assistant.", False
 
-    return _ask_openai(command), False
+    return _ask_llm(command), False

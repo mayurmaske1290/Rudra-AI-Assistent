@@ -1,8 +1,12 @@
 const Student = require('../models/Student');
 
-exports.createStudent = async (req, res) => {
-  const student = await Student.create(req.body);
-  return res.status(201).json(student);
+exports.createStudent = async (req, res, next) => {
+  try {
+    const student = await Student.create(req.body);
+    return res.status(201).json(student);
+  } catch (err) {
+    return next(err);
+  }
 };
 exports.getStudents = async (req, res) => {
   const students = await Student.find().sort({ createdAt: -1 });

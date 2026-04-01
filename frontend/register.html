@@ -1,0 +1,4 @@
+<!doctype html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Register</title><link rel='stylesheet' href='css/style.css'></head>
+<body><form class='form' id='registerForm'><h2>Admin Registration</h2><input id='name' placeholder='Name' required><input id='email' type='email' placeholder='Email' required><input id='password' type='password' placeholder='Password' minlength='6' required><button>Register</button><a href='login.html'>Go to login</a></form><script>
+registerForm.onsubmit=async(e)=>{e.preventDefault();const res=await fetch('http://localhost:5000/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name.value,email:email.value,password:password.value})});const data=await res.json();if(!res.ok)return alert(data.message||'Register failed');localStorage.setItem('token',data.token);location.href='dashboard.html';};
+</script></body></html>

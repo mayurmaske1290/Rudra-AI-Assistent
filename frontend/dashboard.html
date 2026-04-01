@@ -1,0 +1,6 @@
+<!doctype html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Dashboard</title><link rel='stylesheet' href='css/style.css'></head><body>
+<div class='layout'><aside class='sidebar'><h3>LMS Admin</h3><a href='dashboard.html'>Dashboard</a><a href='books.html'>Books</a><a href='students.html'>Students</a><a href='publishers.html'>Publishers</a><a href='borrow.html'>Borrow</a><a href='return.html'>Return</a></aside>
+<main class='main'><div class='topbar'><h2>Dashboard</h2><div><button id='darkModeToggle'>Dark</button> <button id='logoutBtn'>Logout</button></div></div><div id='loader' class='loader'></div><section id='cards' class='cards'></section></main></div>
+<script src='js/script.js'></script><script>
+(async()=>{loader.style.display='inline-block';const r=await authFetch('/dashboard/stats');const d=await r.json();loader.style.display='none';cards.innerHTML=['total_books','total_students','borrowed_books','returned_books','overdue_books'].map(k=>`<div class='card'><h4>${k.replaceAll('_',' ')}</h4><h2>${d[k]||0}</h2></div>`).join('');})();
+</script></body></html>

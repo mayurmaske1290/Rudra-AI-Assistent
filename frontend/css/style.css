@@ -1,0 +1,17 @@
+:root { --bg:#f6f8fb; --card:#fff; --primary:#3b82f6; --text:#1f2937; --muted:#6b7280; --border:#e5e7eb; }
+body.dark { --bg:#0f172a; --card:#1e293b; --text:#e5e7eb; --muted:#94a3b8; --border:#334155; }
+*{box-sizing:border-box;font-family:Inter,Arial,sans-serif} body{margin:0;background:var(--bg);color:var(--text)}
+.layout{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.sidebar{background:var(--card);border-right:1px solid var(--border);padding:20px}
+.sidebar a{display:block;color:var(--text);text-decoration:none;padding:10px;border-radius:8px;margin:6px 0}.sidebar a:hover{background:#eaf1ff}
+.main{padding:20px}.topbar{display:flex;justify-content:space-between;align-items:center}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px}
+.card{background:var(--card);padding:16px;border:1px solid var(--border);border-radius:14px;box-shadow:0 4px 15px rgba(0,0,0,.04);animation:fadeIn .5s ease}
+.table-wrap{background:var(--card);padding:12px;border:1px solid var(--border);border-radius:14px;margin-top:18px;overflow:auto}
+table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left}th{cursor:pointer}
+button,.btn{background:var(--primary);border:none;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-block}
+input,select{padding:10px;border:1px solid var(--border);border-radius:8px;width:100%;background:var(--card);color:var(--text)}
+.form{display:grid;gap:10px;max-width:420px;margin:40px auto;background:var(--card);padding:20px;border-radius:14px;border:1px solid var(--border)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.toast{position:fixed;top:20px;right:20px;background:#111827;color:#fff;padding:10px 14px;border-radius:8px;opacity:0;transition:.3s}
+.toast.show{opacity:1}.modal{position:fixed;inset:0;background:#0006;display:none;align-items:center;justify-content:center}.modal.show{display:flex}.modal-content{background:var(--card);padding:18px;border-radius:14px;min-width:320px}
+.loader{display:none;width:24px;height:24px;border:3px solid #93c5fd;border-top-color:#1d4ed8;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}} @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+@media (max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:flex;gap:8px;overflow:auto;white-space:nowrap}}

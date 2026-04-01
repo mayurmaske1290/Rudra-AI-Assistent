@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Students</title><link rel='stylesheet' href='css/style.css'></head><body>
+<div class='layout'><aside class='sidebar'><h3>LMS Admin</h3><a href='dashboard.html'>Dashboard</a><a href='books.html'>Books</a><a href='students.html'>Students</a><a href='publishers.html'>Publishers</a><a href='borrow.html'>Borrow</a><a href='return.html'>Return</a></aside>
+<main class='main'><div class='topbar'><h2>Students</h2><div><button id='darkModeToggle'>Dark</button><button id='logoutBtn'>Logout</button></div></div>
+<div class='form' style='margin:10px 0;max-width:none;grid-template-columns:repeat(6,1fr)'><input id='student_id' placeholder='ID'><input id='name' placeholder='Name'><input id='department' placeholder='Department'><input id='email' placeholder='Email'><input id='phone' placeholder='Phone'><button id='addStudent'>Add</button></div>
+<div class='table-wrap'><table><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Email</th><th>Phone</th></tr></thead><tbody id='tbody'></tbody></table></div></main></div>
+<script src='js/script.js'></script><script>
+const load=async()=>{const r=await authFetch('/students');const d=await r.json();tbody.innerHTML=d.map(s=>`<tr><td>${s.student_id}</td><td>${s.name}</td><td>${s.department}</td><td>${s.email}</td><td>${s.phone}</td></tr>`).join('')};
+addStudent.onclick=async()=>{const r=await authFetch('/students',{method:'POST',body:JSON.stringify({student_id:student_id.value,name:name.value,department:department.value,email:email.value,phone:phone.value})});toast(r.ok?'Student added':'Failed');load();};load();
+</script></body></html>

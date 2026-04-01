@@ -1,0 +1,8 @@
+<!doctype html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Return</title><link rel='stylesheet' href='css/style.css'></head><body>
+<div class='layout'><aside class='sidebar'><h3>LMS Admin</h3><a href='dashboard.html'>Dashboard</a><a href='books.html'>Books</a><a href='students.html'>Students</a><a href='publishers.html'>Publishers</a><a href='borrow.html'>Borrow</a><a href='return.html'>Return</a></aside>
+<main class='main'><div class='topbar'><h2>Return Module</h2><div><button id='darkModeToggle'>Dark</button><button id='logoutBtn'>Logout</button></div></div>
+<div class='form'><input id='student_id' placeholder='Student ID'><input id='book_id' placeholder='Book ID'><button id='returnBtn'>Mark Returned</button></div><div id='result' class='card'></div>
+<div class='toolbar'><a class='btn' href='http://localhost:5000/api/reports/borrow-history/pdf' target='_blank'>Export Borrow PDF</a></div>
+</main></div><script src='js/script.js'></script><script>
+returnBtn.onclick=async()=>{const r=await authFetch('/transactions/return',{method:'POST',body:JSON.stringify({student_id:student_id.value,book_id:book_id.value})});const d=await r.json();if(!r.ok)return toast(d.message||'Failed');result.innerHTML=`<h4>Returned</h4><p>Date: ${new Date(d.return_date).toLocaleDateString()}</p><p>Late fee: $${d.late_fee}</p>`;toast('Book returned');};
+</script></body></html>
